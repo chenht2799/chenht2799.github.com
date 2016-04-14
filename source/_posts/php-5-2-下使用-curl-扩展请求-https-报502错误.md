@@ -11,27 +11,17 @@ php版本是 5.2
 <?php
 
 $ch = curl_init();
-
 // 设置curl允许执行的最长秒数
 curl_setopt($ch, CURLOPT_TIMEOUT, 15);
-
 curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,false);
-
 curl_setopt($ch,CURLOPT_SSL_VERIFYHOST,false);
-
 // 获取的信息以文件流的形式返回，而不是直接输出。
-
 curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
-
 curl_setopt($ch, CURLOPT_URL, 'https://www.baidu.com');
 
-
-
 $res = curl_exec($ch);
-
 var_dump($res);
 
-exit;
 ```
 
 对于PHP开发来说，很少会碰到 Segmentation fault (core dumped) 这样的错误，调试也不好调试，服务器上对于这个502的错误，
