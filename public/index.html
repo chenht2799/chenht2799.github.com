@@ -64,7 +64,7 @@
     <article id="post-php-5-2-下使用-curl-扩展请求-https-报502错误" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/04/14/php-5-2-下使用-curl-扩展请求-https-报502错误/" class="article-date">
-  <time datetime="2016-04-14T13:33:32.000Z" itemprop="datePublished">2016-04-14</time>
+  <time datetime="2016-04-14T13:47:25.000Z" itemprop="datePublished">2016-04-14</time>
 </a>
     
   </div>
@@ -73,28 +73,14 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>php 5.2 下使用 curl 扩展请求 https 报502错误</p>
+        <p>#php 5.2 下使用 curl 扩展请求 https 报502错误</p>
 <p>最近用php的curl扩展去请求对方的 https 接口时会报错 Segmentation fault (core dumped)</p>
 <p>php版本是 5.2</p>
-<p>1</p>
-<p>curl 版本</p>
-<p>537824</p>
 <p>示例代码如下</p>
-<p>&lt;?php</p>
-<p>$ch = curl_init();</p>
-<p>// 设置curl允许执行的最长秒数</p>
-<p>curl_setopt($ch, CURLOPT_TIMEOUT, 15);</p>
-<p>curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,false);</p>
-<p>curl_setopt($ch,CURLOPT_SSL_VERIFYHOST,false);</p>
-<p>// 获取的信息以文件流的形式返回，而不是直接输出。</p>
-<p>curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);</p>
-<p>curl_setopt($ch, CURLOPT_URL, ‘<a href="https://www.baidu.com" target="_blank" rel="external">https://www.baidu.com</a>‘);</p>
-<p>$res = curl_exec($ch);</p>
-<p>var_dump($res);</p>
-<p>exit;</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$ch</span> = curl_init();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 设置curl允许执行的最长秒数</span></span><br><span class="line">curl_setopt(<span class="variable">$ch</span>, CURLOPT_TIMEOUT, <span class="number">15</span>);</span><br><span class="line"></span><br><span class="line">curl_setopt(<span class="variable">$ch</span>,CURLOPT_SSL_VERIFYPEER,<span class="keyword">false</span>);</span><br><span class="line"></span><br><span class="line">curl_setopt(<span class="variable">$ch</span>,CURLOPT_SSL_VERIFYHOST,<span class="keyword">false</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取的信息以文件流的形式返回，而不是直接输出。</span></span><br><span class="line"></span><br><span class="line">curl_setopt(<span class="variable">$ch</span>, CURLOPT_RETURNTRANSFER,<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">curl_setopt(<span class="variable">$ch</span>, CURLOPT_URL, <span class="string">'https://www.baidu.com'</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="variable">$res</span> = curl_exec(<span class="variable">$ch</span>);</span><br><span class="line"></span><br><span class="line">var_dump(<span class="variable">$res</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">exit</span>;</span><br></pre></td></tr></table></figure>
 <p>对于PHP开发来说，很少会碰到 Segmentation fault (core dumped) 这样的错误，调试也不好调试，服务器上对于这个502的错误，</p>
 <p>php error log 什么都没有，php-fpm logs 也没看出什么明显的东西，于是乎，用 gbd 工具来查bug</p>
-<p>(gdb) run /www/test_curl.php<br>11529602</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(gdb) run /www/test_curl.php</span><br></pre></td></tr></table></figure>
 <p>(gdb) bt</p>
 <p>4504276</p>
 <p>貌似问题出在了 NSS 的库编译上，于是又google了一番 ，找到了这个答案 <a href="https://bugs.centos.org/view.php?id=7399" target="_blank" rel="external">https://bugs.centos.org/view.php?id=7399</a></p>
@@ -104,13 +90,17 @@
 <p>继续执行上面的脚本，成功，bingo ~~~</p>
 <p>总结：</p>
 <p>遇到 php 5.2 下使用 curl 扩展请求 https 报502错误 这么坑爹的问题，解决问题如下：</p>
-<p><strong> 1、像我上文所描述的解决办法处理； </strong></p>
-<p><strong> 2、直接把 php 版本升级了，比较暴力； </strong></p>
+<ul>
+<li><p><strong> 像我上文所描述的解决办法处理； </strong></p>
+</li>
+<li><p><strong> 直接把 php 版本升级了，比较暴力； </strong></p>
+</li>
+</ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/04/14/php-5-2-下使用-curl-扩展请求-https-报502错误/" data-id="cin0bxh3o00010i5nvi2zhi3h" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/04/14/php-5-2-下使用-curl-扩展请求-https-报502错误/" data-id="cin0cclu300012g5nyqcax0vn" class="article-share-link">Share</a>
       
       
     </footer>
@@ -155,7 +145,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/04/14/hello-world/" data-id="cin0bxh3f00000i5nd6l5hrd4" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/04/14/hello-world/" data-id="cin0ccltl00002g5nsbo9kyaw" class="article-share-link">Share</a>
       
       
     </footer>
