@@ -61,6 +61,65 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-php-5-2-下使用-curl-扩展请求-https-报502错误" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/04/14/php-5-2-下使用-curl-扩展请求-https-报502错误/" class="article-date">
+  <time datetime="2016-04-14T13:33:32.000Z" itemprop="datePublished">2016-04-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>php 5.2 下使用 curl 扩展请求 https 报502错误</p>
+<p>最近用php的curl扩展去请求对方的 https 接口时会报错 Segmentation fault (core dumped)</p>
+<p>php版本是 5.2</p>
+<p>1</p>
+<p>curl 版本</p>
+<p>537824</p>
+<p>示例代码如下</p>
+<p>&lt;?php</p>
+<p>$ch = curl_init();</p>
+<p>// 设置curl允许执行的最长秒数</p>
+<p>curl_setopt($ch, CURLOPT_TIMEOUT, 15);</p>
+<p>curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,false);</p>
+<p>curl_setopt($ch,CURLOPT_SSL_VERIFYHOST,false);</p>
+<p>// 获取的信息以文件流的形式返回，而不是直接输出。</p>
+<p>curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);</p>
+<p>curl_setopt($ch, CURLOPT_URL, ‘<a href="https://www.baidu.com" target="_blank" rel="external">https://www.baidu.com</a>‘);</p>
+<p>$res = curl_exec($ch);</p>
+<p>var_dump($res);</p>
+<p>exit;</p>
+<p>对于PHP开发来说，很少会碰到 Segmentation fault (core dumped) 这样的错误，调试也不好调试，服务器上对于这个502的错误，</p>
+<p>php error log 什么都没有，php-fpm logs 也没看出什么明显的东西，于是乎，用 gbd 工具来查bug</p>
+<p>(gdb) run /www/test_curl.php<br>11529602</p>
+<p>(gdb) bt</p>
+<p>4504276</p>
+<p>貌似问题出在了 NSS 的库编译上，于是又google了一番 ，找到了这个答案 <a href="https://bugs.centos.org/view.php?id=7399" target="_blank" rel="external">https://bugs.centos.org/view.php?id=7399</a></p>
+<p>7378273</p>
+<p>PHP 的作者给出答案，NSS的版本问题，因此，对服务器上的 curl 的 NSS 做降级处理，把版本弄成 3.16.2.3</p>
+<p>1848770</p>
+<p>继续执行上面的脚本，成功，bingo ~~~</p>
+<p>总结：</p>
+<p>遇到 php 5.2 下使用 curl 扩展请求 https 报502错误 这么坑爹的问题，解决问题如下：</p>
+<p><strong> 1、像我上文所描述的解决办法处理； </strong></p>
+<p><strong> 2、直接把 php 版本升级了，比较暴力； </strong></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/04/14/php-5-2-下使用-curl-扩展请求-https-报502错误/" data-id="cin0bxh3o00010i5nvi2zhi3h" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/04/14/hello-world/" class="article-date">
@@ -96,7 +155,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/04/14/hello-world/" data-id="cin0b6beq0000v75nfdtotdri" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/04/14/hello-world/" data-id="cin0bxh3f00000i5nd6l5hrd4" class="article-share-link">Share</a>
       
       
     </footer>
@@ -121,7 +180,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -131,6 +190,10 @@
     <h3 class="widget-title">Recents</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2016/04/14/php-5-2-下使用-curl-扩展请求-https-报502错误/">(no title)</a>
+          </li>
         
           <li>
             <a href="/2016/04/14/hello-world/">Hello World</a>
