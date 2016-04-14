@@ -1,4 +1,4 @@
-#php 5.2 下使用 curl 扩展请求 https 报502错误
+# php 5.2 下使用 curl 扩展请求 https 报502错误
 
 最近用php的curl扩展去请求对方的 https 接口时会报错 Segmentation fault (core dumped)
 
