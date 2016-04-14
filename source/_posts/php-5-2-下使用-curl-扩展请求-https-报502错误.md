@@ -1,26 +1,18 @@
-php 5.2 下使用 curl 扩展请求 https 报502错误
+#php 5.2 下使用 curl 扩展请求 https 报502错误
 
 最近用php的curl扩展去请求对方的 https 接口时会报错 Segmentation fault (core dumped)
 
 php版本是 5.2
 
-1
-
-curl 版本
-
-537824
 
 示例代码如下
 
-
+```php
 <?php
-
-
 
 $ch = curl_init();
 
 // 设置curl允许执行的最长秒数
-
 curl_setopt($ch, CURLOPT_TIMEOUT, 15);
 
 curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,false);
@@ -40,14 +32,15 @@ $res = curl_exec($ch);
 var_dump($res);
 
 exit;
+```
 
 对于PHP开发来说，很少会碰到 Segmentation fault (core dumped) 这样的错误，调试也不好调试，服务器上对于这个502的错误，
 
 php error log 什么都没有，php-fpm logs 也没看出什么明显的东西，于是乎，用 gbd 工具来查bug
 
-
+```shell
 (gdb) run /www/test_curl.php 
-11529602
+```
 
 
 (gdb) bt
