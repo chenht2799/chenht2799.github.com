@@ -4,15 +4,15 @@
 
 # Site
 title: chenhetao
-subtitle:
-description:
+subtitle: test
+description: test description
 author: Chen hetao
-language:
+language: 
 timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://yoursite.com
+url: http://www.chenhetao.com
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:

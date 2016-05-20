@@ -5,15 +5,15 @@
   
   <title>chenhetao</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
+  <meta name="description" content="test description">
 <meta property="og:type" content="website">
 <meta property="og:title" content="chenhetao">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:url" content="http://www.chenhetao.com/index.html">
 <meta property="og:site_name" content="chenhetao">
-<meta property="og:description">
+<meta property="og:description" content="test description">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="chenhetao">
-<meta name="twitter:description">
+<meta name="twitter:description" content="test description">
   
     <link rel="alternative" href="/atom.xml" title="chenhetao" type="application/atom+xml">
   
@@ -36,6 +36,10 @@
         <a href="/" id="logo">chenhetao</a>
       </h1>
       
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">test</a>
+        </h2>
+      
     </div>
     <div id="header-inner" class="inner">
       <nav id="main-nav">
@@ -53,13 +57,96 @@
         <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://www.chenhetao.com"></form>
       </div>
     </div>
   </div>
 </header>
       <div class="outer">
         <section id="main">
+  
+    <article id="post-xhprof-教程" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/05/20/xhprof-教程/" class="article-date">
+  <time datetime="2016-05-20T08:51:29.000Z" itemprop="datePublished">2016-05-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/05/20/xhprof-教程/">xhprof 教程</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="u7B80_u4ECB"><a href="#u7B80_u4ECB" class="headerlink" title="简介"></a>简介</h3><p>XHProf 是一个轻量级的分层性能测量分析器。 <strong>在数据收集阶段，它跟踪调用次数与测量数据，展示程序动态调用的弧线图。 它在报告、后期处理阶段计算了独占的性能度量，例如运行经过的时间、CPU 计算时间和内存开销。</strong> 函数性能报告可以由调用者和被调用者终止。 在数据搜集阶段 XHProf 通过调用图的循环来检测递归函数，通过赋予唯一的深度名称来避免递归调用的循环。</p>
+<p>XHProf 包含了一个基于 HTML 的简单用户界面(由 PHP 写成)。 基于浏览器的用户界面使得浏览、分享性能数据结果更加简单方便。 同时也支持查看调用图。</p>
+<p>XHProf 的报告对理解代码执行结构常常很有帮助。 比如此分层报告可用于确定在哪个调用链里调用了某个函数。</p>
+<p>XHProf 对两次运行进行比较（又名 “diff” 报告），或者多次运行数据的合计。 对比、合并报告，很像针对单次运行的“平式视图”性能报告，就像“分层式视图”的性能报告。</p>
+<h3 id="u5B89_u88C5_u6269_u5C55"><a href="#u5B89_u88C5_u6269_u5C55" class="headerlink" title="安装扩展"></a>安装扩展</h3><ul>
+<li>下载合适的版本 <a href="https://pecl.php.net/package/xhprof" target="_blank" rel="external">xhprof</a></li>
+<li>通过 phpize 安装扩展<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd ~/Downloads/xhprof-0.9.4/extension/&#10;phpize&#10;./configure&#10;make&#10;make install</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><em>这个时候 /usr/local/Cellar/php55/5.5.30/lib/php/extensions/no-debug-non-zts-20121212/ 就会产生 xhprof.so 的扩展</em></p>
+<ul>
+<li>修改 php.ini 配置文件<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /usr/local/etc/php/5.5/php.ini</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[xhprof]</span><br><span class="line">extension=xhprof.so<span class="comment">;</span></span><br><span class="line"><span class="comment">; directory used by default implementation of the iXHProfRuns</span></span><br><span class="line"><span class="comment">; interface (namely, the XHProfRuns_Default class) for storing</span></span><br><span class="line"><span class="comment">; XHProf runs.</span></span><br><span class="line"><span class="comment">;</span></span><br><span class="line"><span class="comment">;xhprof.output_dir=&lt;directory_for_storing_xhprof_runs&gt;</span></span><br><span class="line">xhprof.output_dir=/tmp/xhprof</span><br></pre></td></tr></table></figure>
+<ul>
+<li>重启 php-fpm</li>
+</ul>
+<h3 id="u5FEB_u901F_u90E8_u7F72_u811A_u672C"><a href="#u5FEB_u901F_u90E8_u7F72_u811A_u672C" class="headerlink" title="快速部署脚本"></a>快速部署脚本</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash&#10;# fexiang&#10;# Used to install xhprof&#10;# 2014/11/27&#10;&#10;cd /tmp&#10;wget http://pecl.php.net/get/xhprof-0.9.2.tgz&#10;tar xvf xhprof-0.9.2.tgz&#10;cd xhprof-0.9.2/extension/&#10;/usr/local/webserver/php/bin/phpize&#10;./configure --with-php-config=/usr/local/webserver/php/bin/php-config&#10;make &#38;&#38; make install&#10;&#10;mkdir /tmp/xhprof&#10;chown www:www /tmp/xhprof -R&#10;&#10;cat &#62;&#62; /usr/local/webserver/php/etc/php.ini &#60;&#60; EOF&#10;[xhprof]&#10;extension=xhprof.so;&#10;; directory used by default implementation of the iXHProfRuns&#10;; interface (namely, the XHProfRuns_Default class) for storing&#10;; XHProf runs.&#10;&#10;xhprof.output_dir=&#60;directory_for_storing_xhprof_runs&#62;&#10;xhprof.output_dir=/tmp/xhprof&#10;EOF&#10;&#10;/etc/init.d/php-fpm restart&#10;&#10;yum install graphviz&#10;yum install graphviz-gd</span><br></pre></td></tr></table></figure>
+<h3 id="u4EE3_u7801_u8C03_u4F18"><a href="#u4EE3_u7801_u8C03_u4F18" class="headerlink" title="代码调优"></a>代码调优</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">&lt;?php</span></span><br><span class="line"><span class="comment">// cpu:XHPROF_FLAGS_CPU 内存:XHPROF_FLAGS_MEMORY</span></span><br><span class="line"><span class="comment">// 如果两个一起：XHPROF_FLAGS_CPU + XHPROF_FLAGS_MEMORY</span></span><br><span class="line">xhprof_enable(XHPROF_FLAGS_CPU + XHPROF_FLAGS_MEMORY);</span><br><span class="line"><span class="comment">// 要测试的php代码</span></span><br><span class="line"> </span><br><span class="line"><span class="variable">$data</span> = xhprof_disable(); <span class="comment">//返回运行数据</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">// xhprof_lib在下载的包里存在这个目录,记得将目录包含到运行的php代码中</span></span><br><span class="line"><span class="keyword">include_once</span> <span class="string">"xhprof_lib/utils/xhprof_lib.php"</span>;</span><br><span class="line"><span class="keyword">include_once</span> <span class="string">"xhprof_lib/utils/xhprof_runs.php"</span>;</span><br><span class="line"> </span><br><span class="line"><span class="variable">$objXhprofRun</span> = <span class="keyword">new</span> XHProfRuns_Default();</span><br><span class="line"> </span><br><span class="line"><span class="comment">// 第一个参数j是xhprof_disable()函数返回的运行信息</span></span><br><span class="line"><span class="comment">// 第二个参数是自定义的命名空间字符串(任意字符串),</span></span><br><span class="line"><span class="comment">// 返回运行ID,用这个ID查看相关的运行结果</span></span><br><span class="line"><span class="variable">$run_id</span> = <span class="variable">$objXhprofRun</span>-&gt;save_run(<span class="variable">$data</span>, <span class="string">"bluefrog"</span>);</span><br><span class="line">var_dump(<span class="variable">$run_id</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="u67E5_u770B_u7ED3_u679C"><a href="#u67E5_u770B_u7ED3_u679C" class="headerlink" title="查看结果"></a>查看结果</h3><p>访问 xxx/xhprof_html/index.php?run=$run_id&amp;source=bluefrog 就可经看到你的php代码运行的相关情况<br>下面是一些参数说明</p>
+<ul>
+<li>Function Name：方法名称。</li>
+<li>Calls：方法被调用的次数。</li>
+<li>Calls%：方法调用次数在同级方法总数调用次数中所占的百分比。</li>
+<li>Incl.Wall Time(microsec)：方法执行花费的时间，包括子方法的执行时间。（单位：微秒）</li>
+<li>IWall%：方法执行花费的时间百分比。</li>
+<li>Excl. Wall Time(microsec)：方法本身执行花费的时间，不包括子方法的执行时间。（单位：微秒）</li>
+<li>EWall%：方法本身执行花费的时间百分比。</li>
+<li><strong> Incl. CPU(microsecs)：方法执行花费的CPU时间，包括子方法的执行时间。（单位：微秒）</strong></li>
+<li>ICpu%：方法执行花费的CPU时间百分比。</li>
+<li>Excl. CPU(microsec)：方法本身执行花费的CPU时间，不包括子方法的执行时间。（单位：微秒）</li>
+<li>ECPU%：方法本身执行花费的CPU时间百分比。</li>
+<li><strong> Incl.MemUse(bytes)：方法执行占用的内存，包括子方法执行占用的内存。（单位：字节）</strong></li>
+<li>IMemUse%：方法执行占用的内存百分比。</li>
+<li>Excl.MemUse(bytes)：方法本身执行占用的内存，不包括子方法执行占用的内存。（单位：字节）</li>
+<li>EMemUse%：方法本身执行占用的内存百分比。</li>
+<li>Incl.PeakMemUse(bytes)：Incl.MemUse峰值。（单位：字节）</li>
+<li>IPeakMemUse%：Incl.MemUse峰值百分比。</li>
+<li>Excl.PeakMemUse(bytes)：Excl.MemUse峰值。单位：（字节）</li>
+<li>EPeakMemUse%：Excl.MemUse峰值百分比。</li>
+</ul>
+<h3 id="u9047_u5230_u7684_u95EE_u9898"><a href="#u9047_u5230_u7684_u95EE_u9898" class="headerlink" title="遇到的问题"></a>遇到的问题</h3><ul>
+<li>安装扩展，运行测试的时候的日志写入文件夹权限问题</li>
+<li>使用图表方式展示结果报错 failed to execute cmd: “ dot -Tpng”. stderr: `sh: dot: command not found ‘<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#&#32418;&#24125;&#31995;&#21015;&#10;yum install graphviz&#10;yum install graphviz-gd&#10;#Ununtu debian&#10;apt-get install graphviz&#10;#mac&#31995;&#32479;&#10;brew install graphviz</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.chenhetao.com/2016/05/20/xhprof-教程/" data-id="ciofhmo120001cr5nwmxahu0a" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
   
     <article id="post-php-5-2-下使用-curl-扩展请求-https-报502错误" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
@@ -99,7 +186,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/04/14/php-5-2-下使用-curl-扩展请求-https-报502错误/" data-id="cin1174pu00019f5nba4g02y6" class="article-share-link">Share</a>
+      <a data-url="http://www.chenhetao.com/2016/04/14/php-5-2-下使用-curl-扩展请求-https-报502错误/" data-id="ciofhmo160002cr5nm3yba1d4" class="article-share-link">Share</a>
       
       
     </footer>
@@ -144,7 +231,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/04/14/hello-world/" data-id="cin1174pi00009f5ni8bisw2e" class="article-share-link">Share</a>
+      <a data-url="http://www.chenhetao.com/2016/04/14/hello-world/" data-id="ciofhmnzy0000cr5n5bpt3zei" class="article-share-link">Share</a>
       
       
     </footer>
@@ -169,7 +256,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -179,6 +266,10 @@
     <h3 class="widget-title">Recents</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2016/05/20/xhprof-教程/">xhprof 教程</a>
+          </li>
         
           <li>
             <a href="/2016/04/14/php-5-2-下使用-curl-扩展请求-https-报502错误/">(no title)</a>
