@@ -65,6 +65,39 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-设计模式-—-运用复用机制" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/07/20/设计模式-—-运用复用机制/" class="article-date">
+  <time datetime="2016-07-20T08:55:03.000Z" itemprop="datePublished">2016-07-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>记住一句话：优先使用对象组合，而不是类继承</p>
+<p>首先，一共可以有三种方式可以体现出复用的思想：继承、组合、委托；</p>
+<p>那么，先说明概念（我想继承就不用多说了）？</p>
+<p>组合：对象组合是通过获得对其他对象的引用而在运行时刻动态定义的。组合要求对象遵守彼此的接口约定，进而要求更仔细地定义接口，而这些接口接口并不妨碍你将一个对象和其他对象一起使用。<br>委托：委托是一种组合的方法，它使组合具有与继承同样的复用能力。<br>恩，有点抽象是吧，那么，我来举个栗子；</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line">* 组装属于我自己的车</span><br><span class="line">* 继承了“车”这个类</span><br><span class="line">* 同时各个零件需要组装，例如宝马的引擎、日产的轮胎</span><br><span class="line">*/</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyCar</span> <span class="keyword">extends</span> <span class="title">Cars</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> <span class="variable">$tyre</span> = <span class="keyword">null</span>; <span class="comment">//组合形式，轮胎接口</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="variable">$bmw</span> = <span class="keyword">null</span>; <span class="comment">//委托形式，使用宝马类的对象</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__constcurc</span><span class="params">()</span></span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="variable">$this</span>-&gt;<span class="variable">$bmw</span> = <span class="keyword">new</span> Bmw();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">make_engin</span><span class="params">()</span></span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="comment">//改用德国宝马引擎，马力十足</span></span><br><span class="line">        <span class="variable">$this</span>-&gt;bmw-&gt;make_engin();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">make_tyre</span><span class="params">()</span></span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="variable">$this</span>-&gt;tyre-&gt;make_tyre();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">    * 轮胎接口 interface Tyre</span><br><span class="line">    * 例如我传进去的 $tyre 参数是继承了Tyre接口的东风日产类</span><br><span class="line">    * <span class="doctag">@param</span> Tyre $tyre [description]</span><br><span class="line">    */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">set_tyre</span><span class="params">(Tyre <span class="variable">$tyre</span>)</span></span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="variable">$this</span>-&gt;tyre = <span class="variable">$tyre</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="preprocessor">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>例子里面是我要组装属于我自己的车，首先因为我是个外行的，我不知道怎么装车??<br>因此，我要继承 Cars 这个类，它告诉了我组装车需要什么方法、什么步骤；<br>好了，现在知道组装一辆车并不简单，它需要组装引擎、轮胎等（当然不止这两个），那么引擎基本是不会怎么变化的，决定了使用那个引擎就基本不再动它的了，所以这里可以使用委托的形式，比如说委托“BMW”类来帮我组装引擎；<br>然后到轮胎，轮胎相对引擎来说是easy job，而且达到了一定的使用年限之后是会去更换的，<br>有时候是更换日产、有时候是本田等等，因此，组装轮胎的方式使用组合就最合适不过了，只要我改一下引用的对象，轮胎的类型就随机更改了。</p>
+<p>后记：本文是我在最近看《设计模式》这本书过程中的一个小结，可能很地方表达是不过确切的，全当是一篇自己的读书笔记了。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.chenhetao.com/2016/07/20/设计模式-—-运用复用机制/" data-id="ciqunlem000013e5ny2jvngd1" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-xhprof-教程" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/05/20/xhprof-教程/" class="article-date">
@@ -138,7 +171,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://www.chenhetao.com/2016/05/20/xhprof-教程/" data-id="ciofhmo120001cr5nwmxahu0a" class="article-share-link">Share</a>
+      <a data-url="http://www.chenhetao.com/2016/05/20/xhprof-教程/" data-id="ciqunlemc00023e5n10qirr46" class="article-share-link">Share</a>
       
       
     </footer>
@@ -186,7 +219,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://www.chenhetao.com/2016/04/14/php-5-2-下使用-curl-扩展请求-https-报502错误/" data-id="ciofhmo160002cr5nm3yba1d4" class="article-share-link">Share</a>
+      <a data-url="http://www.chenhetao.com/2016/04/14/php-5-2-下使用-curl-扩展请求-https-报502错误/" data-id="ciqunleme00033e5ngn21ofa0" class="article-share-link">Share</a>
       
       
     </footer>
@@ -231,7 +264,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://www.chenhetao.com/2016/04/14/hello-world/" data-id="ciofhmnzy0000cr5n5bpt3zei" class="article-share-link">Share</a>
+      <a data-url="http://www.chenhetao.com/2016/04/14/hello-world/" data-id="ciqunlels00003e5nq29fk281" class="article-share-link">Share</a>
       
       
     </footer>
@@ -256,7 +289,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -266,6 +299,10 @@
     <h3 class="widget-title">Recents</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2016/07/20/设计模式-—-运用复用机制/">(no title)</a>
+          </li>
         
           <li>
             <a href="/2016/05/20/xhprof-教程/">xhprof 教程</a>
